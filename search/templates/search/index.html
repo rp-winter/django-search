@@ -1,0 +1,23 @@
+
+<!--htmx.js-->
+<script src="https://unpkg.com/htmx.org@1.1.0" integrity="sha384-JVb/MVb+DiMDoxpTmoXWmMYSpQD2Z/1yiruL8+vC6Ri9lk6ORGiQqKSqfmCBbpbX" crossorigin="anonymous"></script>
+
+<form action="{% url 'search:submit' %}" method="post">
+    {% csrf_token %}
+    <label for="name">Name</label>
+    <input type="text" name="name" />
+    <br>
+    <div>
+        <label for="institution">Institution</label>
+        <input type="text" id="institution" name="institution" hx-post="{% url 'search:search_institute' %}" hx-trigger="keyup changed delay:100ms" hx-target="#results"/>
+        <div id="results">
+        </div>
+    </div>
+    <input type="submit" value="Submit" name="btnSubmit"></input>
+</form>
+
+<script>
+function change_value(e) {
+    document.getElementById("institution").value = e.innerText;
+}
+</script>
