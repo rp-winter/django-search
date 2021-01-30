@@ -1,4 +1,33 @@
-
+<style>
+    /*the container must be positioned relative:*/
+    .autocomplete {
+      position: relative;
+      display: inline-block;
+    }
+    .autocomplete-items {
+      position: absolute;
+      border: 1px solid #d4d4d4;
+      border-bottom: none;
+      border-top: none;
+      z-index: 99;
+      /*position the autocomplete items to be the same width as the container:*/
+      top: 100%;
+      left: 0;
+      right: 0;
+    }
+    
+    .autocomplete-items div {
+      padding: 10px;
+      cursor: pointer;
+      background-color: #fff; 
+      border-bottom: 1px solid #d4d4d4; 
+    }
+    
+    /*when hovering an item:*/
+    .autocomplete-items div:hover {
+      background-color: #e9e9e9; 
+    }
+    </style>
 <!--htmx.js-->
 <script src="https://unpkg.com/htmx.org@1.1.0" integrity="sha384-JVb/MVb+DiMDoxpTmoXWmMYSpQD2Z/1yiruL8+vC6Ri9lk6ORGiQqKSqfmCBbpbX" crossorigin="anonymous"></script>
 
@@ -7,17 +36,19 @@
     <label for="name">Name</label>
     <input type="text" name="name" />
     <br>
-    <div>
+    <div class="autocomplete">
         <label for="institution">Institution</label>
-        <input type="text" id="institution" name="institution" hx-post="{% url 'search:search_institute' %}" hx-trigger="keyup changed delay:100ms" hx-target="#results"/>
-        <div id="results">
+        <input type="text" id="institution" name="institution" autocomplete="off" hx-post="{% url 'search:search_institute' %}" hx-trigger="keyup changed delay:100ms" hx-target="#results"/>
+        <div id="results" class="autocomplete-items">
         </div>
     </div>
+    <br>
     <input type="submit" value="Submit" name="btnSubmit"></input>
 </form>
 
 <script>
 function change_value(e) {
     document.getElementById("institution").value = e.innerText;
+    document.getElementById("results").innerHTML = "";
 }
 </script>

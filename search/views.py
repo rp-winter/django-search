@@ -11,10 +11,13 @@ def index(request):
 
 def search_institute(request):
     q = request.POST['institution']
-    object_list = Institute.objects.filter(name__icontains=q)
-    html = ""
-    for object in object_list:
-        html = html + '<a onclick="change_value(this)">'+object.name+'</a><br>'
+    if q:
+        object_list = Institute.objects.filter(name__icontains=q)
+        html = ""
+        for object in object_list:
+            html = html + '<div onclick="change_value(this)">'+object.name+'</div>'
+    else:
+        html = ""
     return HttpResponse(html)
 
 def print_form(request):
