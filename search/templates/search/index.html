@@ -35,9 +35,9 @@
 <!--htmx.js-->
 <script src="https://unpkg.com/htmx.org@1.1.0" integrity="sha384-JVb/MVb+DiMDoxpTmoXWmMYSpQD2Z/1yiruL8+vC6Ri9lk6ORGiQqKSqfmCBbpbX" crossorigin="anonymous"></script>
 
-<form action="{% url 'search:submit' %}" method="post">
+<form action="{% url 'search:submit' %}" method="post" id="form">
     {% csrf_token %}
-    <div class="autocomplete">
+    <div>
       <label for="username">Username</label>
       <input type="text" id="username" name="username">
       <br>
@@ -50,24 +50,37 @@
       <label for="last_name">Last Name</label>
       <input type="text" id="last_name" name="last_name">
       <br>
-      <div>
+      <div class="autocomplete">
         <label for="institution">Institution</label>
         <input type="text" id="institution" name="institution" autocomplete="off" hx-post="{% url 'search:search_institute' %}" hx-trigger="keyup[keyCode!=13] changed delay:100ms" hx-target="#results"/>
         <div id="results" class="autocomplete-items"></div>
       </div>
+      <br>
         <label for="password1">Password</label>
         <input type="password" id="password1" name="password1" hx-post="{% url 'search:validate_password1' %}" hx-trigger="keyup changed delay:500ms" hx-target="#pass_val" hx-include="#username, #email, #first_name, #last_name" minlength="8"/>
-        <div >
-          <ul id="pass_val" style="color: red;">
+        <div>
+          <ul id="pass_val" style="color: red;" class="error">
           </ul>
         </div>
         <br>
     </div>
     <br>
-    <input type="submit" value="Submit" name="btnSubmit"></input>
+    <input type="submit" value="Submit" name="btnSubmit" onclick="form_check(event)"></input>
 </form>
 
 <script>
+  function form_check(event) {
+    event.preventDefault();
+    var x = document.getElementsByClassName("error");
+    var i;
+    for (i = 0; i < x.length; i++) {
+      if (x[i].innerHTML) {
+        alert("Please perform the corrections before submitting.");
+        return false;
+      }
+    }
+    document.getElementById("form").submit();
+  }
 function change_value(e) {
     document.getElementById("institution").value = e.innerText;
     document.getElementById("results").innerHTML = "";

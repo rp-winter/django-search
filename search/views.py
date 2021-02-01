@@ -58,6 +58,6 @@ def submit(request):
     except ObjectDoesNotExist:
         i = Institute(name = request.POST['institution'])
         i.save()
-    q = Users(name = request.POST['name'], institution = i)
+    q = Users(name = request.POST['first_name'], institution = i)
     q.save()
     return HttpResponseRedirect(reverse('search:print_form'))
